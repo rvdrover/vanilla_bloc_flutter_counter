@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vanilla_bloc_flutter_counter/vanilla_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -10,41 +11,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  VanillaBloc vanillaBloc = VanillaBloc();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
+  @override
+  void dispose() {
+    super.dispose();
+    vanillaBloc.counterController.close();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("widget Rebuild");
+    print("Widget Rebuild");
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Text(
-          "$_counter",
-          style: const TextStyle(
-            fontSize: 60,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      body: StreamBuilder<int>(
+          stream: vanillaBloc.outCounter,
+          initialData: 0,
+          builder: (context, snapshot) {
+            return Center(
+              child: Text(
+                "${snapshot.data}",
+                style: const TextStyle(
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
+          }),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
-            onPressed: _incrementCounter,
+            onPressed: vanillaBloc.incrementCounter,
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             width: 20,
           ),
           FloatingActionButton(
-            onPressed: _decrementCounter,
+            onPressed: vanillaBloc.decrementCounter,
             tooltip: 'Decrement',
             child: const Icon(Icons.remove),
           )
