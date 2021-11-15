@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vanilla_bloc_flutter_counter/vanilla_bloc.dart';
+import 'package:vanilla_bloc_flutter_counter/bloc/vanilla_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
